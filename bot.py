@@ -271,15 +271,20 @@ def format_top10_message(coins: list) -> str:
 
 
 # ── Correction Signal (RSI + H4 pump) ────────────────────────────────────────
+def get_top10_symbols() -> list:
+    """Lấy top 10 coin pump mạnh nhất 24h trên BingX, trả về list symbol."""
+    coins = get_top10_gainers()
+    return [c["symbol"] for c in coins]
+
 def run_correction_check() -> str:
-    """Quét correction signal, trả về message tổng hợp."""
-    symbols = get_filtered_symbols()
+    """Quét correction signal trên top 10 gainers, trả về message tổng hợp."""
+    symbols = get_top10_symbols()
     if not symbols:
         return "⚠️ Không lấy được danh sách coin."
     signals = run_correction_scan(symbols)
     if not signals:
         now = datetime.now(timezone.utc).strftime("%H:%M UTC")
-        return f"✅ Không có Correction Signal lúc {now}.\n(Chưa có coin nào pump H4 ≥50% + RSI ≥80 trên 7/10 khung)"
+        return f"✅ Không có Correction Signal lúc {now}.\n(Top 10 gainers chưa có coin nào pump H4 ≥50%)"
     msgs = [format_correction_message(s) for s in signals]
     return "\n\n──────────────\n\n".join(msgs)
 
@@ -298,9 +303,9 @@ def process_auto_scan():
     else:
         logger.info("Auto scan: không có tín hiệu pump/dump mới")
 
-    # Scan correction signal (RSI + H4 pump)
+    # Scan correction signal — chỉ quét top 10 gainers
     try:
-        symbols = get_filtered_symbols()
+        symbols = get_top10_symbols()
         if symbols:
             signals = run_correction_scan(symbols)
             for sig in signals:
