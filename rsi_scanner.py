@@ -16,21 +16,16 @@ logger = logging.getLogger(__name__)
 # ── Cấu hình ─────────────────────────────────────────────────────────────────
 H4_PUMP_THRESHOLD   = 50.0   # % pump H4 tối thiểu
 RSI_OVERBOUGHT      = 60.0   # ngưỡng RSI quá mua (hạ từ 80 → 60)
-RSI_MIN_TIMEFRAMES  = 7      # số khung lý tưởng (chỉ hiển thị, không lọc)
+RSI_MIN_TIMEFRAMES  = 4      # số khung lý tưởng (chỉ hiển thị, không lọc)
 RSI_LENGTH          = 14     # chu kỳ RSI
 MIN_PRICE           = 0.000001
 
-# 10 khung thời gian (BingX interval format)
+# 5 khung thời gian
 RSI_TIMEFRAMES = [
-    ("1m",  "1m"),
-    ("5m",  "5m"),
     ("15m", "15m"),
-    ("30m", "30m"),
     ("1h",  "1h"),
     ("4h",  "4h"),
-    ("12h", "12h"),
     ("1d",  "1d"),
-    ("3d",  "3d"),
     ("1w",  "1w"),
 ]
 
